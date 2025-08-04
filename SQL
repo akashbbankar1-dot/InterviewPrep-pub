@@ -1,0 +1,455 @@
+SQL Interview Question and Answer
+
+1. What is the difference between CHAR and VARCHAR2 data types?
+--> CHAR: Fixed-length storage. If the defined length is not fully used, it is padded with spaces.
+    VARCHAR2: Variable-length storage. Only the actual data is stored, saving space when the full length is not needed.
+
+2. What is a primary key?
+---> Primary Key is used to unique identifier for each record we cant insert duplicate value in colum and it does not take NULL value.
+
+3. What is a foreign key?
+---> A foreign key is a constraint used to establish and enforce a link between two tables. It ensures that the value in one table (child) corresponds to a valid value in another table (parent).
+
+4. What is the purpose of the DEFAULT constraint?
+---> The DEFAULT constraint in SQL is used to assign a default value to a column when no value is provided during an INSERT.
+        e.g:- CREATE TABLE employee (
+                    emp_id INT PRIMARY KEY,
+                    emp_name VARCHAR(50),
+                    department VARCHAR(50) DEFAULT 'General',
+                    joining_date DATE DEFAULT CURRENT_DATE
+                );
+
+5. What is normalization in databases?
+---> Normalization we can use to organizing data into database to reduce redundancy and improve data integrity.  This involves dividing large tables into smaller, related tables and defining relationships between them to ensure consistency and avoid anomalies.
+
+6. What is denormalization, and when is it used?
+---> Denormalization is the process of combining normalized tables into larger tables for performance reasons. It is used when complex queries and joins slow down data retrieval, and the performance benefits outweigh the drawbacks of redundancy.
+
+7. What is a view in SQL?
+---> A view is a virtual table created by a SELECT query. It does not store data itself, but presents data from one or more tables in a structured way. 
+     Views simplify complex queries, improve readability, and enhance security by restricting access to specific rows or columns.
+     Syntax:- 
+        CREATE VIEW view_name AS
+        SELECT column1, column2
+        FROM table_name
+        WHERE condition;
+
+8. What is the purpose of the UNIQUE constraint?
+---> The UNIQUE constraint ensures that all values in a column (or combination of columns) are distinct. This prevents duplicate values and helps maintain data integrity.
+
+9. What are the different types of joins in SQL?
+    INNER JOIN: Returns rows that have matching values in both tables.
+    LEFT JOIN (LEFT OUTER JOIN): Returns all rows from the left table, and matching rows from the right table.
+    RIGHT JOIN (RIGHT OUTER JOIN): Returns all rows from the right table, and matching rows from the left table.
+    FULL JOIN (FULL OUTER JOIN): Returns all rows when there is a match in either table.
+    CROSS JOIN: Produces the Cartesian product of two tables.
+
+10. What is the purpose of the GROUP BY clause?
+---> The GROUP BY clause is used to arrange identical data into groups. It is typically used with aggregate functions (such as COUNT, SUM, AVG) to perform calculations on each group rather than on the entire dataset.
+
+11. What are aggregate functions in SQL?
+---> Aggregate functions perform calculations on a set of values and return a single value. Common aggregate functions include:
+      COUNT(): Returns the number of rows.
+      SUM(): Returns the total sum of values.
+      AVG(): Returns the average of values.
+      MIN(): Returns the smallest value.
+      MAX(): Returns the largest value.
+
+12. What is a subquery?
+---> A subquery is a query nested within another query. It is often used in the WHERE clause to filter data based on the results of another query, making it easier to handle complex conditions.
+
+13. What is the difference between the WHERE and HAVING clauses?
+---> The WHERE clause filters rows before grouping, while the HAVING clause filters groups after grouping. WHERE cannot use aggregate functions, but HAVING is specifically designed to work with them. 
+     For example, WHERE department='IT' filters employees before grouping, while HAVING COUNT(*) > 2 filters departments after grouping.
+
+14. What are indexes, and why are they used?
+---> Indexes are special lookup structures that make data retrieval faster in SQL, just like a book index helps you find topics quickly. They are used to speed up queries, especially those with WHERE, JOIN, or ORDER BY. 
+     However, they add overhead to data modifications since the index also has to be updated.
+      CREATE INDEX idx_name ON employee(name);
+      SELECT * FROM employee WHERE name = 'Alice';
+
+15. What is the difference between DELETE and TRUNCATE commands?
+---> DELETE: Removes rows one at a time and records each deletion in the transaction log, allowing rollback. It can have a WHERE clause.
+     TRUNCATE: Removes all rows at once without logging individual row deletions. It cannot have a WHERE clause and is faster than DELETE for large data sets.
+
+16. What is the purpose of the SQL ORDER BY clause?
+---> The ORDER BY clause sorts the result set of a query in either ascending (default) or descending order, based on one or more columns. This helps present the data in a more meaningful or readable sequence.
+
+17. What are the types of constraints in SQL?
+ ---> Common constraints include:
+      NOT NULL: Ensures a column cannot have NULL values.
+      UNIQUE: Ensures all values in a column are distinct.
+      PRIMARY KEY: Uniquely identifies each row in a table.
+      FOREIGN KEY: Ensures referential integrity by linking to a primary key in another table.
+      CHECK: Ensures that all values in a column satisfy a specific condition.
+      DEFAULT: Sets a default value for a column when no value is specified.
+
+18. What is a trigger in SQL?
+---> A trigger is a special stored procedure in SQL that is automatically executed (fired) when a specific event occurs on a table or view.
+     In simple terms: A trigger = automatic action in response to INSERT, UPDATE, or DELETE.
+     Types of Triggers
+      BEFORE Trigger → Runs before the event (e.g., validate or modify data).
+      AFTER Trigger → Runs after the event (e.g., log changes).
+      INSTEAD OF Trigger → Replaces the action (mostly for views).
+      example:- 
+              CREATE TRIGGER after_salary_update
+              AFTER UPDATE ON employee
+              FOR EACH ROW
+              BEGIN
+                  IF OLD.salary <> NEW.salary THEN
+                      INSERT INTO salary_log (emp_id, old_salary, new_salary)
+                      VALUES (OLD.id, OLD.salary, NEW.salary);
+                  END IF;
+              END;
+
+
+19.  What are NULL values in SQL?
+--->  NULL represents a missing or unknown value. It is different from zero or an empty string. NULL values indicate that the data is not available or applicable.
+
+20. What is a stored procedure?
+---> A stored procedure is a precompiled set of SQL statements stored in the database, which can be executed by calling its name.
+     example:- 
+     DELIMITER $$
+          CREATE PROCEDURE GetEmployeesByDept(IN dept_name VARCHAR(50))
+          BEGIN
+              SELECT id, name, salary
+              FROM employee
+              WHERE department = dept_name;
+          END $$
+          
+          DELIMITER ;
+
+21. What is the difference between DDL and DML commands?
+--->    1. DDL (Data Definition Language):
+    
+    These commands are used to define and modify the structure of database objects such as tables, indexes, and views. For example, the CREATE command creates a new table, the ALTER command modifies an existing table, and the DROP command removes a table entirely. DDL commands primarily focus on the schema or structure of the database.
+    
+    Example:
+    
+    CREATE TABLE Employees (
+        ID INT PRIMARY KEY,
+        Name VARCHAR(50)
+    );
+    2. DML (Data Manipulation Language):
+    
+    These commands deal with the actual data stored within database objects. For instance, the INSERT command adds rows of data to a table, the UPDATE command modifies existing data, and the DELETE command removes rows from a table. In short, DML commands allow you to query and manipulate the data itself rather than the structure.
+    
+    Example:
+    
+    INSERT INTO Employees (ID, Name) VALUES (1, 'Alice');
+
+22. What is the purpose of the ALTER command in SQL?
+--->  The ALTER command is used to modify the structure of an existing database object. This command is essential for adapting our database schema as requirements evolve.
+      Add or drop a column in a table.
+      Change a column’s data type.
+      Add or remove constraints.
+      Rename columns or tables.
+      Adjust indexing or storage settings.
+
+23. What is a composite primary key?
+---> A composite primary key is a primary key made of two or more columns. It ensures that the combination of those columns is unique and not NULL. 
+For example, in an order system, (order_id, product_id) can be a composite primary key to ensure the same product cannot be listed twice in the same order.
+example:- 
+    CREATE TABLE OrderDetails (
+        OrderID INT,
+        ProductID INT,
+        Quantity INT,
+        PRIMARY KEY (OrderID, ProductID)
+    );
+
+24. What is a UNION operation, and how is it used?
+---> The UNION operator combines the result sets of two or more SELECT queries into a single result set, removing duplicate rows. The result sets must have the same number of columns and compatible data types for corresponding columns.
+      Example:
+      
+      SELECT Name FROM Customers  
+      UNION  
+      SELECT Name FROM Employees;
+25. What is the difference between UNION and UNION ALL?
+---> UNION: Combines result sets from two queries and removes duplicate rows, ensuring only unique records are returned.
+     UNION ALL: Combines the result sets without removing duplicates, meaning all records from both queries are included.
+     Performance-wise, UNION ALL is faster than UNION because it doesn’t perform the additional operation of eliminating duplicates.
+      Example:
+      
+      SELECT Name FROM Customers  
+      UNION ALL  
+      SELECT Name FROM Employees;
+
+26. How does the CASE statement work in SQL?
+--->  The CASE statement is SQL’s way of implementing conditional logic in queries. It evaluates conditions and returns a value based on the first condition that evaluates to true. If no condition is met, it can return a default value using the ELSE clause.
+    Example:
+    SELECT ID,  
+           CASE  
+               WHEN Salary > 100000 THEN 'High'  
+               WHEN Salary BETWEEN 50000 AND 100000 THEN 'Medium'  
+               ELSE 'Low'  
+           END AS SalaryLevel  
+    FROM Employees;
+
+27. What are scalar functions in SQL?
+---> Scalar functions operate on individual values and return a single value as a result. They are often used for formatting or converting data. Common examples include:
+
+    LEN(): Returns the length of a string.
+    ROUND(): Rounds a numeric value.
+    CONVERT(): Converts a value from one data type to another.
+    Example:
+    
+    SELECT LEN('Example') AS StringLength;
+
+
+28.  What is the purpose of the COALESCE function?
+--->  The COALESCE function returns the first non-NULL value from a list of expressions. It’s commonly used to provide default values or handle missing data gracefully.
+    Example:
+    SELECT COALESCE(NULL, NULL, 'Default Value') AS Result;
+
+29. What is the difference between the NVL and NVL2 functions?
+    NVL(): Replaces a NULL value with a specified replacement value. Example: NVL(Salary, 0) will replace NULL with 0.
+    NVL2(): Evaluates two arguments:
+    If the first argument is NOT NULL, returns the second argument.
+    If the first argument is NULL, returns the third argument.
+    Example:
+    
+    SELECT NVL(Salary, 0) AS AdjustedSalary FROM Employees;  -- Replaces NULL with 0
+    
+    SELECT NVL2(Salary, Salary, 0) AS AdjustedSalary FROM Employees;  -- If Salary is NULL, returns 0; otherwise, returns Salary.
+
+
+30. How does the RANK() function differ from DENSE_RANK()?
+    RANK(): Assigns a rank to each row, with gaps if there are ties.
+    DENSE_RANK(): Assigns consecutive ranks without any gaps.
+    Example:
+    SELECT Name, Salary, RANK() OVER (ORDER BY Salary DESC) AS Rank  
+    FROM Employees;
+    If two employees have the same salary, they get the same rank, but RANK() will skip a number for the next rank, while DENSE_RANK() will not.
+
+31. What is the difference between ROW_NUMBER() and RANK()?
+    ROW_NUMBER(): Assigns a unique number to each row regardless of ties.
+    RANK(): Assigns the same number to tied rows and leaves gaps for subsequent ranks.
+    Example:
+    
+    SELECT Name, ROW_NUMBER() OVER (ORDER BY Salary DESC) AS RowNum  
+    FROM Employees;
+
+32. What are common table expressions (CTEs) in SQL?
+    A CTE is a temporary result set defined within a query. It improves query readability and can be referenced multiple times.
+    Example:
+    WITH TopSalaries AS (  
+        SELECT Name, Salary  
+        FROM Employees  
+        WHERE Salary > 50000  
+    )  
+    SELECT * FROM TopSalaries WHERE Name LIKE 'A%';
+
+33. What are window functions, and how are they used?
+---> Window functions perform calculations across a set of rows related to the current row, without collapsing the result into a single output row like aggregate functions do.
+    Unlike regular aggregate functions that group rows into one result, window functions keep all the rows and add calculated values as additional columns.
+    The set of rows is called the window, defined by the OVER() clause.
+    example:- 
+    SELECT id, department, salary,
+       ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC) AS rank_in_dept
+    FROM employee;
+
+34. What is the difference between clustered and non-clustered indexes?
+    1. Clustered Index:
+    
+    Organizes the physical data in the table itself in the order of the indexed column(s).
+    A table can have only one clustered index.
+    Improves range queries and queries that sort data.
+    Example: If EmployeeID is the clustered index, the rows in the table are stored physically sorted by EmployeeID.
+    EmployeeID	Name	    Department
+    101	        Alice	      IT
+    102	        Carol	      IT
+    105        	Bob	        HR
+    108      	  Emma	      HR
+    110	        Dave	      Finance
+                [105]
+              /       \
+         [101,102]    [108,110]
+
+    Root node has key 105, dividing smaller and larger EmployeeIDs.
+    Leaf nodes contain actual data rows sorted by EmployeeID.
+    Searching for EmployeeID=108:
+    Start at root → 108 > 105 → go right leaf → find 108 → get data row.
+
+    2. Non-Clustered Index:
+    
+    Maintains a separate structure that contains a reference (or pointer) to the physical data in the table.
+    A table can have multiple non-clustered indexes.
+    Useful for specific query conditions that aren’t related to the primary ordering of the data.
+    Example: A non-clustered index on LastName allows fast lookups by last name even if the table is sorted by another column.
+    Physical Order of Rows on Disk:
+    Non-Clustered Index Leaf Nodes:
+    Department	Pointer to Data Row (EmployeeID)
+    Finance	   110
+    HR	       105
+    HR	       108
+    IT	       101
+    IT	       102
+    
+    Non-Clustered Index B-Tree (Conceptual)
+                   [HR]
+                  /    \
+             [Finance] [IT]
+    Leaf nodes store Department values plus pointers to actual rows (EmployeeID).
+    Searching for Department='HR':
+    Navigate B-Tree → find 'HR' keys → get pointers (105, 108) → use pointers to fetch rows from main table.
+
+
+35. What are temporary tables, and how are they used?
+    Temporary tables are tables that exist only for the duration of a session or a transaction. They are useful for storing intermediate results, simplifying complex queries, or performing operations on subsets of data without modifying the main tables.
+    
+    1. Local Temporary Tables:
+    
+    Prefixed with # (e.g., #TempTable).
+    Only visible to the session that created them.
+    Automatically dropped when the session ends.
+    2. Global Temporary Tables:
+    
+    Prefixed with ## (e.g., ##GlobalTempTable).
+    Visible to all sessions.
+    Dropped when all sessions that reference them are closed.
+    Example:
+    
+    CREATE TABLE #TempResults (ID INT, Value VARCHAR(50));
+    INSERT INTO #TempResults VALUES (1, 'Test');
+    SELECT * FROM #TempResults;
+
+36. What is the purpose of the SQL MERGE statement?
+    The MERGE statement combines multiple operations INSERT, UPDATE, and DELETE into one. It is used to synchronize two tables by:
+    
+    Inserting rows that don’t exist in the target table.
+    Updating rows that already exist.
+    Deleting rows from the target table based on conditions
+    Example:
+    
+    MERGE INTO TargetTable T  
+    USING SourceTable S  
+    ON T.ID = S.ID  
+    WHEN MATCHED THEN  
+        UPDATE SET T.Value = S.Value  
+    WHEN NOT MATCHED THEN  
+        INSERT (ID, Value) VALUES (S.ID, S.Value);
+
+37. How can you handle duplicates in a query without using DISTINCT?
+    1. GROUP BY: Aggregate rows to eliminate duplicates
+    
+    SELECT Column1, MAX(Column2)  
+    FROM TableName  
+    GROUP BY Column1;
+    2. ROW_NUMBER(): Assign a unique number to each row and filter by that
+    
+    WITH CTE AS (  
+        SELECT Column1, Column2, ROW_NUMBER() OVER (PARTITION BY Column1 ORDER BY Column2) AS RowNum  
+        FROM TableName  
+    )  
+    SELECT * FROM CTE WHERE RowNum = 1;
+
+
+38. What is a correlated subquery?
+    A correlated subquery is a subquery that references columns from the outer query. It is re-executed for each row processed by the outer query. This makes it more dynamic, but potentially less efficient.
+    Example:
+    SELECT Name,  
+           (SELECT COUNT(*)  
+            FROM Orders  
+            WHERE Orders.CustomerID = Customers.CustomerID) AS OrderCount  
+    FROM Customers;
+
+39. What are partitioned tables, and when should we use them?
+    A partitioned table is a large database table that is divided into smaller, more manageable pieces called partitions.
+    Common Partitioning Methods
+    Type	Description	Example Use Case
+    Range	Partition based on ranges of values	Partition sales data by year/month
+    List	Partition by list of discrete values	Partition by country or region
+    Hash	Partition by hashing column values	Distribute data evenly when no natural range
+    Composite	Combination of above methods	More complex scenarios
+          CREATE TABLE Orders (
+          OrderID INT,
+          OrderDate DATE,
+          CustomerID INT,
+          Amount DECIMAL(10,2)
+      )
+      PARTITION BY RANGE (YEAR(OrderDate)) (
+          PARTITION p2022 VALUES LESS THAN (2023),
+          PARTITION p2023 VALUES LESS THAN (2024),
+          PARTITION pMax VALUES LESS THAN MAXVALUE
+      );
+
+40. What are the ACID properties of a transaction?
+---> 1. Atomicity (All or Nothing)
+    Ensures that all steps in a transaction complete successfully, or none at all.
+    If one part fails, the whole transaction is rolled back.
+    Example: In a bank transfer, debit from Account A and credit to Account B must both succeed. If credit fails, debit is rolled back.
+    2. Consistency (Measurment of correctness)
+    The database must stay correct before and after the transaction.
+    Example: You can’t transfer money if it makes balance negative (rule enforced).
+    3.Isolation (No Interference)
+    Ensures that concurrent transactions don’t affect each other.
+    Each transaction executes as if it’s the only one running, until it’s committed.
+    Controlled by isolation levels (READ COMMITTED, SERIALIZABLE, etc.).
+    Example: If two people buy the last ticket at the same time, isolation ensures only one transaction succeeds.
+    4. Durability (Permanent)
+    Once a transaction is committed, its changes are permanently saved in the database.
+    Even if the system crashes, data will not be lost (thanks to logs, backups, write-ahead logging).
+    Example: If money transfer is committed, even a power failure cannot undo it.
+
+41.What are the differences between OLTP and OLAP systems?
+---> OLTP:- Online Transaction Process- Manages day-to-day business operations. Focus: Fast, reliable recording of transactions.
+    Normalized schema to ensure data integrity and consistency.
+    Examples: e-commerce sites, banking systems.
+    OLAP (Online Analytical Processing)-Analyzes historical and aggregated data for decision-making. Focus: Complex queries for business intelligence (BI) and reporting.
+    Denormalized schema (e.g., star or snowflake schemas) to support faster querying.
+    Examples: Business intelligence reporting, data warehousing.
+
+
+
+
+
+
+SQL Queries
+
+1. Write a query to find the second-highest salary of an employee in a table.
+--> SELECT  max(salary) FROM employee WHERE salary < (SELECT max(salary) FROM employee);
+
+    SELECT DISTINCT salary
+    FROM employee
+    ORDER BY salary DESC
+    LIMIT 1 OFFSET 1;
+    
+    
+    SELECT id, name, salary
+    from (
+    SELECT id, name, salary, dense_rank() over(ORDER BY salary DESC) as rnk from employee)
+    as sal_rnk WHERE rnk = 1;
+
+2. Write a query to retrieve employees who earn more than the average salary.
+    SELECT * 
+    FROM Employee 
+    WHERE Salary > (SELECT AVG(Salary) FROM Employee);
+
+3. Write a query to fetch top 3 earning employees?
+   SELECT id, name, salary
+    from (
+    SELECT id, name, salary, dense_rank() over(ORDER BY salary DESC) as rnk from employee)
+    as sal_rnk WHERE rnk in (1,2,3);
+
+4. Write a query to display all departments along with the number of employees in each.
+    SELECT department, count(*) as employee_count from employee GROUP BY department;
+
+5. Write a query to fetch the nth record from a table.
+    WITH OrderedEmployees AS (
+        SELECT *, ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS RowNum
+        FROM Employee
+    )
+    SELECT *
+    FROM OrderedEmployees
+    WHERE RowNum = n;
+
+6. Top 3 highest-paid employees per department
+     WITH OrderedEmployees AS (
+    SELECT emp_name ,salary,dept_id, row_number() over(partition by dept_id order by salary desc) as row_no from employee)
+    
+    SELECT * from OrderedEmployees where row_no=2; 
+
+7. 
+
+
+
