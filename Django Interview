@@ -123,13 +123,127 @@ Django Interview Questions and Answer
                   Send notifications or emails when something happens.
                   Update related data when a change occurs.
 
+25. What is Media Root?
+---> Media Root is used to upload user generated content. user can upload documents, vedio and images.
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    MEDIA_URL = '/media/'
+    
+    MEDIA_ROOT: It is for the server path to store files in the computer.
+    MEDIA_URL: It is the referring URL for the browser to access the files over HTTP.
+
+26. How you can include and inherit files in your application?
+---> Using the extend tag we can inherit our template in Django. The syntax for inheriting these templates is given as:
+    {% extends 'template_name.html' %}  this syntax is used to add all the element of html file into another html file.without copy-pasting the entire code. 
+
+27. How do you connect your Django Project to the database?
+---> For connecting Djnago project with database we required to edit the settings.py file in our django project. In setting.py file there is default databse avilable we require to
+    change that with another which we require to configure. We require to provide Engine, Name, user, Password, Host etc.
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': 'your_db_name',
+                'USER': 'your_db_user',
+                'PASSWORD': 'your_password',
+                'HOST': 'localhost',
+                'PORT': '5432',
+            }
+        }
+
+28. Explain the caching strategies of Django. ?
+---> Caching is a technique to store frequently accessed data in a temporary storage (cache) so that future requests for that data are served faster.
+    Types of Caching Strategies in Django
+    1. Database Cache :- Stores cache data in a database table.
+    2. File-Based Cache :- Stores cache data in files on disk.
+    3. In-Memory Cache (Local-Memory Cache):- Fastest, stores cache in memory.
+
+29. Give the exception classes present in Django.
+---> Django has its own exception classes to cope with this circumstance, and it also supports all fundamental Python exceptions. some of the exception classes are listed below:
+
+    MultipleObjectsReturned - If just one item is anticipated but many objects are returned, this error is thrown by the query.
+    ViewDoesNotExist - When a requested view does not exist, Django.URLs raise this exception.
+    PermissionDenied - It's triggered when a user doesn't have the necessary permissions to perform the requested activity.
+    SuspiciousOperation - The query throws this error if only one item is expected but several things are returned.
+    ValidationError - It's triggered when data validation fails on a form or a model field.
+    FieldDoesNotExist - It raises when the requested field does not exist.
+    ObjectDoesNotExist - The base class for DoesNotExist exceptions.
+    AppRegistryNotReady - It is raised when attempting to use models before the app loading process.
+    EmptyResultSet - If a query does not return any result, this exception is raised.
+
+30. What are the different model inheritance styles in Django?
+---> 1. Abstract Base Classes :- If Serval Model classes having common fields, then it is not recommended to writye these fields seperatly in every Model Class.
+                                 It increase lenght of the code and reduce readability.We can seperate these common fields into another Model Class, which is also known as Base Class.
+                                 When we extend Base Class automatically common fields will be inherited to the child class.
+    example:- class ContactInfo(model.Model):
+                    name = model.Charfield()
+                    email = model.EmailField()
+                    class Meta:
+                        abstract = True
+              class Student(ContactInfo):
+                    rollno = model.IntegerField()
+          Note:- ContactInfo class is a abstract class hence it will not create the table in database.
+    2. Multi-Table Inheritance :- If Base class is not abstract then such type of inheritence is called Multi-Table Inheritance.
+                                  It will create table of both Base and original classes.
+    example:- class ContactInfo(model.Model):
+                    f1 = model.Charfield()
+                    f2 = model.EmailField()
+                    
+              class Student(ContactInfo):
+                    f4 = model.IntegerField()
+    3. Proxy Models:- For the same Model we can provide a customized view without touching the database is possible by using Proxy Model Inheritence.
+                      In this inheritance a seperate new table wont be createed and the new model also pointing to the same old table.
+                class Person(models.Model):
+                name = models.CharField(max_length=100)
+            
+                class PersonProxy(Person):
+                    class Meta:
+                        proxy = True
+                        ordering = ['name']
+
+31. Explain the Django Response lifecycle.
+---> When a user hits a URL in a Django project, Django first looks for a matching pattern in the urls.py file. Once it finds the match, it routes the request to the corresponding view.
+    The view contains the business logic, and if needed, it interacts with the model to fetch or manipulate data from the database.
+    Finally, the view returns a response, often rendered using a template, which is then sent back to the user’s browser
+
+32. How do filter items in the Model?
+---> In Django, you can filter items in the Model using the filter() method on the model’s manager (usually Model.objects). This is how you query the database to retrieve specific records based on conditions.
+    Model.objects.filter(field_name=value)
+
+33. What is the difference between CharField and TextField in Django?
+    TextField is a database field that is used to store big amounts of text. Paragraphs, data, and other items can be saved. CharField should be used to hold tiny text such as First name and Last name. Let's make a new instance of the TextField we just made and see whether it works.
+    CharField is a string field, for small- to large-sized strings. It is generally used for storing small strings like first names, last names, etc. To store larger text TextField is used.
+
+34.  Why is Django called a loosely coupled framework?
+    Django is known as a loosely connected framework because of its MTV architecture. Django's design is an MVC variant, and MTV is advantageous since it totally separates server code from the client's hardware. The client machine has Models and Views, and templates are only returned to the client. All of the architectural elements make distinct from one another.
+
+35. Explain Django Security.
+    The security of users' data is an important aspect of any website design. Django provides adequate security against a number of common threats. Django's security features are as follows:
+    
+    Cross-site scripting (XSS) protection
+    SQL injection protection
+    Cross-site request forgery (CSRF) protection
+    Enforcing SSL/HTTPS
+    Session security
+    Clickjacking protection
+    Host header validation
+
+36. Explain user authentication in Django
+    Django comes with an authentication system configured by default to handle objects like users, groups, permissions, and so on. The authentication system's core is made up of user objects. It not only authenticates users but also authorizes them. Aside from using the default, we can employ a variety of web apps instead of using the default system to enable more user authentication. The default system objects are as follows:
+    
+    Users
+    Permissions
+    Groups
+    Password Hashing System
+    Forms Validation
+    A pluggable backend system
 
 
+37. What is the "Django.shortcuts.render" function?
+    We need the render function when a View function produces a web page as a HttpResponse instead of a basic string. Render is a shortcut for passing a template and a data dictionary. This function combines templates with a data dictionary using a templating engine. Finally, render() provides a HttpResponse containing the rendered text as well as the data from the models.
+    
+    Syntax: render(request, template_name, context=None, content_type=None, status=None, using=None)
 
+38. What is a context in Django?
+    In Django, a context is a dictionary in which the keys represent variable names and the values reflect the values of those variables. This dictionary or context is supplied to the template, which finally outputs the dynamic content using the variables. i.e. {var1: 11, var2: 12}, when you pass this context to the template render method, {{ var1 }} would be replaced with 11 and {{ var2 }} with 12 in your template.
 
-
-
-
-
-
-
+39. What is serialization in Django?
+    Serializers in the Django REST Framework are responsible for transforming objects into data types that javascript and front-end frameworks can understand. After validating the incoming data, serializers also enable deserialization, which allows parsed data to be transformed back into complex types.
