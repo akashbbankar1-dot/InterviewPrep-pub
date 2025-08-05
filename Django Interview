@@ -29,4 +29,107 @@ Django Interview Questions and Answer
     admin.py - It is used to create a superuser Registering model, login, and use the web application.
     app.py - It is a file that helps the user to include the application configuration for their app.
 
-5. 
+5. How do you create a Django project?
+    We can create a Django project with the help of the following command
+    django-admin startproject projectname
+
+6. How do you create a Django app?
+    We can create a Django app with the help of the following command
+    python manage.py startapp appname
+
+7. How do we start our development server?
+   python manage.py runserver
+
+8. Importance of virtual environment setup for Django.
+---> A virtual environment allows you to establish separate dependencies of the different projects by creating an isolated environment that isn't related to each other and can be quickly enabled and deactivated when you're done.
+    It is not necessary to use a virtual environment without a virtual environment we can work with Django projects. However, using virtualenv is thought to be the ideal practice. Because it eliminates dependencies and conflicts.
+
+9. Give a brief about the Django admin interface.
+---> The Django admin interface is a powerful, built-in web-based interface provided by Django to manage and interact with your application's data models. 
+    It is primarily designed for site administrators and developers to perform CRUD (Create, Read, Update, Delete) operations on database models without writing custom HTML or forms.
+
+10. What are Django URLs?
+---> In Django, URLs (Uniform Resource Locators) are used to map web addresses (like /home/ or /products/) to specific Python functions or class-based views that handle the request and return a response.
+
+11. What are the views of Django?
+---> In Django, views can contain python function and classes that recive web request and return web response.
+    view contains the logic needed to process a request, interact with models if necessary, and return the appropriate response (like an HTML page, JSON, etc.).
+
+12. What are the models in Django?
+---> In Django, models are Python classes that define the structure of your database tables. Each model maps to a single table in the database, and each attribute of the model represents a field (or column) in that table.
+
+13. What do the following commands do?
+    python manage.py makemigrations :- Once we write Model Class, We have to generate the corresponding SQL code. For this we can use 'Makemigrations' command.
+    python manage.py migrate :- After generating sql code, we have to execute that sql code to create database table in database. For this we can use 'migrate' command.
+
+14. What are the sessions?
+---> HTTP is a stateless protocol, which means each request from the client to the server is independent—the server does not remember any previous requests made by the same client.
+    However, in many web applications, we need to remember client-specific information across multiple requests (like login status, user preferences, cart items, etc.).
+
+15. Define static files and explain their uses?
+    Static files are used to save files such as CSS, JavaScript, pictures, and other types of static files. We keep them in distinct folders, for as the js folder, which has all of the JavaScript files, and the images folder, which contains all of the images. These files are kept in the static subfolder of the project app. Django provides django.contrib.staticfiles which helps us to manage static files. There are different uses for static files:
+    It clarifies the use of file methods and attributes.
+    It is platform-independent in many ways, whereas generic files are not.
+    Subclasses can be used to extend it.
+
+16. What are templates in the Django language?
+---> templates we can use for presentation layer in django. It allows us to create dynamic page by using HTML, CSS, JavaScript.
+
+17. What does the settings.py file do?
+    The settings.py file in a Django project is the central configuration file where you define all the settings and configurations for your web application.
+    It is automatically created when you start a new Django project and is essential for telling Django how your project should behave in different environments (development, production, etc.).
+
+18. Difference between MVC and MVT design patterns?
+    Model and View are both driven by the controller in MVC, whereas Views in MVT are used to receive HTTP requests and return HTTP responses.
+    We must write all of the control-specific code in MVC whereas, We must write all of the control-specific code in the View and Template components in MVT.
+    MVC is Highly coupled whereas, MVT is loosely coupled.
+    In MVC, it is difficult to modify whereas, Modification is easy in MVT.
+    MVC is suitable for large applications, but MVT is suitable for both small and large applications.
+    MVC does not involve any URL mapping, whereas in MVT URL pattern mapping takes place.
+    Flow is clear and easy to understand, whereas MVT is sometimes harder to understand.
+
+19. What is Django ORM?
+---> Django ORM it means (Object relational mapper) it is used to interact with database. suppose we want to get, update, delete, insert data into database that time we can use ORM.
+    The Django ORM may be accessed by running the following command in our project directory.
+    python manage.py shell
+    This opens a Python console where we may add objects, retrieve objects, modify existing items, and delete objects. 
+
+20. What is Superuser?
+---> A superuser in Django is a special kind of administrative user who has full access to the Django admin interface and all permissions across all apps and models in the project.
+    Superusers are typically used by developers or site administrators to manage the application through the Django admin dashboard.
+
+21. What is Jinja templating?
+---> It's a template engine that allows you to make HTML, XML, and other markup types. Jinja2 is valuable since it features a templating tag syntax and because the project has been extracted as a standalone open-source project that may be utilized as a dependency by other code libraries. Some of its features are:
+
+        HTML Escaping - It provides automatic HTML Escaping as <, >, & characters have special values in templates and if using a regular text, these symbols can lead to XSS Attacks which Jinja deals with automatically.
+        Sandbox Execution - This is a framework for automating the testing process in a sandbox (or protected) environment.
+        Template Inheritance
+        Produces HTML templates far more quickly than the default engine.
+        When compared to the default engine, it is easier to debug.
+
+22. What do you mean by the csrf_token?
+---> csrf_token stands for Cross-Site Request Forgery Token. It is a security feature in Django that helps protect your website from malicious attacks where a third-party site tricks a logged-in user into submitting a form or performing an unwanted action.
+    Why is it needed?
+    HTTP is stateless, and forms that change data (POST, PUT, DELETE) can be targeted by attackers.
+    To prevent this, Django includes a hidden token (csrf_token) in every form. This token must match the one stored in the user's session.
+
+23. Explain the use of Middlewares in Django.
+---> Middleware we can use for if we want to perform any action pre-processing of request and post-processing of request that time we can use middleware.
+
+24. What are ‘signals’?
+---> If we want to perform any pre-processing and post-processing DB action for example post_save, pre_save, post_delete,pre_delete that time we can use signals.
+    For example:- Automatically create a profile when a user is created.
+                  Log or audit actions after a model is saved or deleted.
+                  Send notifications or emails when something happens.
+                  Update related data when a change occurs.
+
+
+
+
+
+
+
+
+
+
+
