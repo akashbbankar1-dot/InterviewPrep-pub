@@ -1,0 +1,14 @@
+FastAPI Interview Questions and Answers
+
+1. What is FastAPI?
+---> FastAPI is a modern, high-performance web framework for building APIs with Python 3.7+ based on standard Python type hints.
+
+Key Features:
+  Fast: Very high performance (comparable to Node.js and Go), thanks to Starlette and Pydantic.
+  Automatic Docs: Generates interactive API documentation automatically using Swagger UI and ReDoc.
+  Type Safety: Uses Python type hints to validate, serialize, and document requests/responses.
+  Asynchronous Support: Built on asyncio, supports both async and await.
+  Validation: Built-in data validation using Pydantic models.
+  Dependency Injection: Powerful, clean DI system for shared resources like DB connections, auth, etc.
+
+2. 
