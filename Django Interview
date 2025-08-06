@@ -247,3 +247,113 @@ Django Interview Questions and Answer
 
 39. What is serialization in Django?
     Serializers in the Django REST Framework are responsible for transforming objects into data types that javascript and front-end frameworks can understand. After validating the incoming data, serializers also enable deserialization, which allows parsed data to be transformed back into complex types.
+
+40. Difference between null=True and blank=True in models?
+---> null=True means the database column is allowed to store a NULL value.
+     blank=True means the field is allowed to be empty in Django forms or admin interface. If submitted blank, it usually stores an empty string ('') in the database (not NULL) — unless you also set null=True.
+
+41. What is the use of select_related() and prefetch_related()?
+---> select_related() we can use with OneToOne field and foreign key it fetches related data in one SQL JOIN query whearas prefetch_related() we can use with many-to-many and reverse foreign key it runs two separate queries, then joins them in Python..
+
+42. What is the difference between @login_required and LoginRequiredMixin?
+---> @login_required we can used with function based view whereas LoginRequiredMixin we can use with class based view.both are used to restrict access to authenticated users only.
+
+43. How do you secure a Django app?
+    Use ALLOWED_HOSTS
+    Use HTTPS
+    Enable CSRF protection
+    Avoid debug mode in production
+    Use secure password hashing
+    Set secure cookie flags
+
+44. What is the use of Form and ModelForm?
+---> we can use Form if we want to manually define form fields  even if they don’t come from a model. and we can use Modelform if we want fields automatically create a form based on a Django model..
+
+Real-Time Project/Scenario-Based
+
+45. How do you optimize performance in Django applications?
+---> Use select_related() / prefetch_related()
+    Use caching (Redis, Memcached)
+    Optimize queries
+    Minimize DB hits
+    Use async views (in Django 3.1+)
+    Paginate large results
+
+46. How would you design a custom user model in Django?
+--->  Create a model inheriting from AbstractBaseUser or AbstractUser.
+    Use a custom model when:
+        You want to use email instead of username for login
+        You need extra fields (like phone number, user role, etc.)
+        You want more control over user creation/validation
+    Two main ways to create a custom user model:
+      1) AbstractBaseUser:- we can use this when we want fully control on user model for example we want to login instead of username by using email.
+      2) AbstractUser:- we can use this just we want to add extra fields in the existing User model.
+47. How do you implement role-based access control in Django?
+---> Role-Based Access Control (RBAC) in Django can be implemented by using custom roles in the user model, Django groups, or decorators/mixins to restrict access to views based on user roles.
+     1)Create role-based access decorator:-
+        # utils.py
+        from django.http import HttpResponseForbidden
+        
+        def role_required(allowed_roles=[]):
+            def decorator(view_func):
+                def wrapper(request, *args, **kwargs):
+                    if request.user.role in allowed_roles:
+                        return view_func(request, *args, **kwargs)
+                    return HttpResponseForbidden("You are not authorized")
+                return wrapper
+            return decorator
+
+        Use it in view:-
+            from .utils import role_required
+            @role_required(allowed_roles=['admin', 'manager'])
+            def dashboard(request):
+                return render(request, "dashboard.html")
+      2) RBAC Using Django Groups & Permissions (Built-in)
+            Add users to groups via Django admin (like Admin, Manager, etc.)
+            Then use the @user_passes_test decorator or permission_required
+      3) Class-Based View (CBV) Example with Mixin
+
+48. What is the difference between get_object_or_404() and get() in Django ORM?
+---> get() returns the object or raises DoesNotExist, while get_object_or_404() returns the object or raises an HTTP 404 error — making it safer for public views.
+    from django.shortcuts import get_object_or_404
+    from myapp.models import Student
+    student = get_object_or_404(Student, id=1)
+
+49. How do you implement custom middleware in Django?
+---> class MyMiddleware:
+            def __init__(self, get_response):
+                self.get_response = get_response
+        
+            def __call__(self, request):
+                # Pre-processing
+                response = self.get_response(request)
+                # Post-processing
+                return response
+
+50. How can you cache views in Django?
+---> Django provides @cache_page to cache entire views. It saves the full response for a given time, reducing DB hits and speeding up response time.
+
+51. What are mixins in Django?
+---> Mixins in Django are small reusable classes that add specific behavior to views or APIs.
+    They are commonly used in class-based views to keep your code clean and DRY.
+
+52. What is throttling in DRF?
+---> Throttling in DRF is used to limit the rate of requests that clients can make to the API. It helps protect your API from:
+    Abuse
+    Brute-force attacks
+    Excessive traffic from a single user or IP
+
+53.  How would you scale a Django application?
+    Database optimization (indexes, query tuning)
+    Caching (Redis, Memcached)
+    Use CDN for static/media
+    Load balancing
+    Queue for async tasks (Celery + RabbitMQ/Redis)
+    Horizontal scaling with containers (Docker/Kubernetes)
+
+54. How do you use .only() and .defer() in Django?
+    Both optimize queryset by limiting fields:
+    .only('field'): Load only the mentioned fields immediately.
+    .defer('field'): Load all except deferred fields.
+
+55. 
